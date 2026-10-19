@@ -172,7 +172,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
 /* Крупные карточки с фото */
 .cat-wide{grid-column:span 2}
 .cat-photo{background:var(--navy);border-color:transparent;color:#fff;min-height:340px;justify-content:flex-end}
-.cat-photo .cat-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.cat-photo .cat-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%;z-index:-2;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
 .cat-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,19,33,.94) 0%,rgba(10,19,33,.78) 45%,rgba(10,19,33,.25) 100%)}
 .cat-photo:hover .cat-bg{transform:scale(1.06)}
 .cat-photo:hover{border-color:rgba(255,180,0,.6)}
@@ -521,7 +521,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
     <!-- Значение data-category у кнопки должно совпадать с value в списке категорий формы -->
     <div class="catalog-grid">
       <article class="cat-card cat-photo cat-wide reveal">
-        <!-- ВРЕМЕННОЕ ФОТО (CC0, WordPress Photo Directory). Заменить: assets/cable.webp -->
+        <!-- ВРЕМЕННОЕ ФОТО (CC0, Wikimedia Commons: «9756Bulacan Baliuag Town Proper 20»). Заменить: assets/cable.webp -->
         <img class="cat-bg" src="assets/cable.webp" alt="" loading="lazy" width="1200" height="900">
         <span class="cat-num" aria-hidden="true">01</span>
         <div class="cat-icon"><svg><use href="#c-cable"/></svg></div>
