@@ -118,10 +118,13 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
 @keyframes heroZoom{from{transform:scale(1.12)}to{transform:scale(1)}}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,19,33,.95) 0%,rgba(10,19,33,.86) 34%,rgba(10,19,33,.45) 64%,rgba(10,19,33,.12) 100%),linear-gradient(0deg,rgba(10,19,33,.92) 0%,rgba(10,19,33,0) 38%)}
 .hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:clamp(24px,4vh,48px);padding-top:clamp(28px,6vh,72px);padding-bottom:clamp(20px,3.5vh,36px)}
-.hero-content{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;max-width:760px}
+.hero-content{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;max-width:920px}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(255,180,0,.12);color:var(--accent);font-weight:700;font-size:14px;letter-spacing:.02em}
 .eyebrow svg{width:16px;height:16px}
-.hero h1{font-size:clamp(32px,min(4.4vw,7.2vh),62px);margin:clamp(14px,2.2vh,22px) 0;text-wrap:balance}
+.hero h1{font-size:clamp(32px,min(4.2vw,7.2vh),60px);margin:clamp(14px,2.2vh,22px) 0}
+/* Заголовок строго в три строки (на телефоне строки могут переноситься) */
+.hero h1 span,.hero h1 em{display:block}
+@media (min-width:641px){.hero h1 span,.hero h1 em{white-space:nowrap}}
 .hero h1 em{font-style:normal;color:var(--accent)}
 .hero-lead{font-size:clamp(16px,min(1.5vw,2.6vh),20px);color:rgba(255,255,255,.82);max-width:640px}
 .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(20px,3.6vh,34px)}
@@ -485,7 +488,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   <div class="container hero-inner">
     <div class="hero-content">
       <span class="eyebrow"><svg><use href="#i-bolt"/></svg>Поставки для&nbsp;бизнеса и&nbsp;частных заказчиков</span>
-      <h1 id="hero-title">Электротехническая и&nbsp;кабельная продукция <em>с&nbsp;поставкой по&nbsp;всей России</em></h1>
+      <h1 id="hero-title"><span>Электротехническая</span> <span>и&nbsp;кабельная продукция</span> <em>с&nbsp;поставкой по&nbsp;всей России</em></h1>
       <p class="hero-lead">Более 10&nbsp;000 позиций&nbsp;— от&nbsp;кабеля и&nbsp;автоматов до&nbsp;трансформаторов и&nbsp;светотехники. Пришлите список или&nbsp;спецификацию: подберём, рассчитаем и&nbsp;поставим всё по&nbsp;одной заявке.</p>
       <div class="hero-actions">
         <a href="#request" class="btn btn-accent"><svg><use href="#i-send"/></svg>Отправить заявку</a>
