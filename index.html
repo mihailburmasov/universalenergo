@@ -62,6 +62,7 @@
   --shadow:0 1px 2px rgba(15,28,46,.06),0 8px 24px rgba(15,28,46,.06);
   --shadow-lg:0 2px 4px rgba(15,28,46,.08),0 18px 40px rgba(15,28,46,.12);
   --header-h:72px;
+  --ticker-h:48px;
   --font:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -71,7 +72,7 @@ img,svg{display:block;max-width:100%}
 a{color:inherit}
 h1,h2,h3{line-height:1.15;margin:0;font-weight:800;letter-spacing:-.02em}
 p{margin:0}
-section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
+section[id],footer[id]{scroll-margin-top:var(--header-h)}
 .container{width:100%;max-width:1200px;margin:0 auto;padding:0 24px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
@@ -110,23 +111,33 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 .mobile-nav{display:none}
 
 /* ---------- Первый экран ---------- */
-.hero{position:relative;overflow:hidden;background:radial-gradient(1200px 600px at 85% -10%,#24406a 0%,rgba(36,64,106,0) 60%),linear-gradient(180deg,var(--navy) 0%,#132439 100%);color:#fff}
-.hero-grid{position:absolute;inset:0;opacity:.5;pointer-events:none}
-.hero-inner{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-top:56px;padding-bottom:72px}
+.hero{position:relative;overflow:hidden;color:#fff;background:var(--navy);display:flex;min-height:calc(100svh - var(--header-h) - var(--ticker-h))}
+/* Фоновое фото + затемнение для читаемости текста */
+.hero-bg{position:absolute;inset:0;margin:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:62% 75%;animation:heroZoom 20s ease-out both}
+@keyframes heroZoom{from{transform:scale(1.12)}to{transform:scale(1)}}
+.hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(10,19,33,.95) 0%,rgba(10,19,33,.86) 34%,rgba(10,19,33,.45) 64%,rgba(10,19,33,.12) 100%),linear-gradient(0deg,rgba(10,19,33,.92) 0%,rgba(10,19,33,0) 38%)}
+.hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;gap:clamp(24px,4vh,48px);padding-top:clamp(28px,6vh,72px);padding-bottom:clamp(20px,3.5vh,36px)}
+.hero-content{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;max-width:760px}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(255,180,0,.12);color:var(--accent);font-weight:700;font-size:14px;letter-spacing:.02em}
 .eyebrow svg{width:16px;height:16px}
-.hero h1{font-size:clamp(32px,4.4vw,54px);margin:20px 0 20px}
+.hero h1{font-size:clamp(32px,min(4.4vw,7.2vh),62px);margin:clamp(14px,2.2vh,22px) 0;text-wrap:balance}
 .hero h1 em{font-style:normal;color:var(--accent)}
-.hero-lead{font-size:clamp(17px,1.5vw,20px);color:rgba(255,255,255,.78);max-width:620px}
-.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
-.hero-stats{display:flex;flex-wrap:wrap;gap:36px;margin-top:44px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1)}
-.hero-stats div{display:flex;flex-direction:column}
-.hero-stats b{font-size:28px;font-weight:800;color:#fff;letter-spacing:-.02em}
-.hero-stats span{font-size:14px;color:rgba(255,255,255,.6)}
-.hero-art{position:relative;aspect-ratio:1/1;max-width:460px;justify-self:end;width:100%}
-.hero-art svg{width:100%;height:100%}
+.hero-lead{font-size:clamp(16px,min(1.5vw,2.6vh),20px);color:rgba(255,255,255,.82);max-width:640px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:clamp(20px,3.6vh,34px)}
+.hero-stats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.hero-stats li{display:flex;flex-direction:column;padding:16px 20px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.hero-stats b{font-size:clamp(20px,1.9vw,26px);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.2}
+.hero-stats span{font-size:14px;color:rgba(255,255,255,.66);line-height:1.35;margin-top:2px}
+.hero-stats li:first-child b{color:var(--accent)}
 
-/* ---------- Секции ---------- */
+/* Бегущая строка направлений под первым экраном */
+.ticker{height:var(--ticker-h);background:var(--accent);color:var(--accent-ink);overflow:hidden;display:flex;align-items:center;white-space:nowrap}
+.ticker-track{display:flex;flex:none;animation:ticker 45s linear infinite}
+.ticker span{display:inline-flex;align-items:center;gap:22px;padding-right:22px;font-weight:800;font-size:15px;letter-spacing:.01em}
+.ticker svg{width:14px;height:14px;flex:none}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
 .section{padding:96px 0}
 .section-alt{background:var(--bg)}
 .section-head{max-width:760px;margin-bottom:48px}
@@ -178,49 +189,55 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 
 /* ---------- Форма ---------- */
 .request{background:linear-gradient(180deg,var(--navy) 0%,#132439 100%);color:#fff}
-.request .section-head p{color:rgba(255,255,255,.72)}
-.request-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start}
-.request-aside ul{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:16px}
-.request-aside li{display:flex;gap:14px;align-items:flex-start;color:rgba(255,255,255,.85)}
-.request-aside li svg{width:22px;height:22px;color:var(--accent);flex:none;margin-top:2px}
-.request-phone{margin-top:32px;padding:22px 24px;border-radius:var(--radius);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.section.request{padding:64px 0}
+.request .section-head p{color:rgba(255,255,255,.72);font-size:17px;margin-top:12px}
+.request .section-head h2{font-size:clamp(26px,2.6vw,36px)}
+.request-wrap{display:grid;grid-template-columns:.75fr 1.25fr;gap:48px;align-items:center}
+.request-aside ul{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.request-aside li{display:flex;gap:12px;align-items:flex-start;color:rgba(255,255,255,.85);font-size:16px}
+.request-aside li svg{width:20px;height:20px;color:var(--accent);flex:none;margin-top:3px}
+.request-phone{margin-top:26px;padding:18px 22px;border-radius:var(--radius);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
 .request-phone span{display:block;font-size:14px;color:rgba(255,255,255,.6)}
 .request-phone a{font-size:24px;font-weight:800;text-decoration:none;color:#fff}
 .request-phone a:hover{color:var(--accent)}
 
-.form-card{background:#fff;color:var(--text);border-radius:calc(var(--radius) + 4px);padding:36px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.field{display:flex;flex-direction:column;gap:7px}
+.form-card{background:#fff;color:var(--text);border-radius:calc(var(--radius) + 4px);padding:28px 30px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.form-title{font-size:20px;font-weight:800;letter-spacing:-.01em;margin:0 0 16px}
+.form-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px 16px}
+.field{display:flex;flex-direction:column;gap:5px;grid-column:span 6;min-width:0}
+.f-third{grid-column:span 2}
+.f-half{grid-column:span 3}
 .field-full{grid-column:1/-1}
-.field label{font-size:14px;font-weight:700;color:var(--graphite)}
+.field label{font-size:13px;font-weight:700;color:var(--graphite)}
 .field label .opt{font-weight:500;color:var(--muted)}
 .field label .req{color:#d64545}
-.field input,.field select,.field textarea{width:100%;font:inherit;font-size:16px;color:var(--text);padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff;transition:border-color .2s,box-shadow .2s}
-.field textarea{min-height:120px;resize:vertical}
-.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6678' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:20px;padding-right:42px}
+.field input,.field select,.field textarea{width:100%;font:inherit;font-size:15px;color:var(--text);padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;transition:border-color .2s,box-shadow .2s}
+.field textarea{min-height:84px;resize:vertical;line-height:1.45}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235b6678' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:18px;padding-right:36px;text-overflow:ellipsis}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent-2);box-shadow:0 0 0 4px rgba(255,145,0,.15)}
 .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:#d64545}
-.field-error{font-size:13px;color:#d64545;min-height:0}
+.field-error{font-size:12.5px;color:#d64545;line-height:1.3}
+.field-error:empty{display:none}
 .field.flash select{animation:flash 1.4s ease}
 @keyframes flash{0%,100%{box-shadow:0 0 0 0 rgba(255,145,0,0)}25%,60%{box-shadow:0 0 0 6px rgba(255,145,0,.35);border-color:var(--accent-2)}}
 
-.file-drop{position:relative;display:flex;align-items:center;gap:14px;padding:16px;border:1.5px dashed #c8d0db;border-radius:10px;background:var(--bg);cursor:pointer;transition:border-color .2s,background .2s}
+.file-drop{position:relative;display:flex;align-items:center;gap:12px;padding:10px 14px;border:1.5px dashed #c8d0db;border-radius:10px;background:var(--bg);cursor:pointer;transition:border-color .2s,background .2s}
 .file-drop:hover,.file-drop.drag{border-color:var(--accent-2);background:#fff8ea}
+.file-drop:focus-within{border-color:var(--accent-2);box-shadow:0 0 0 4px rgba(255,145,0,.15)}
 .file-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
-.file-drop svg{width:28px;height:28px;color:var(--accent-2);flex:none}
-.file-drop-text{font-size:15px;color:var(--muted);line-height:1.4}
+.file-drop svg{width:24px;height:24px;color:var(--accent-2);flex:none}
+.file-drop-text{font-size:14px;color:var(--muted);line-height:1.35}
 .file-drop-text b{color:var(--text)}
 .file-name{font-weight:700;color:var(--text);word-break:break-all}
 
-.consent{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--muted);line-height:1.5}
-.consent input{width:20px;height:20px;margin:1px 0 0;flex:none;accent-color:var(--accent-2);cursor:pointer}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);line-height:1.45}
+.consent input{width:18px;height:18px;margin:1px 0 0;flex:none;accent-color:var(--accent-2);cursor:pointer}
 .consent a{color:var(--text);font-weight:600}
 .consent.invalid{color:#d64545}
 .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
 
-.form-actions{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
-.form-actions .btn{min-width:220px}
-.form-actions small{color:var(--muted);font-size:13px}
+.form-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.form-actions .btn{min-width:220px;min-height:48px}
 .form-status{font-size:14px;color:#d64545}
 .btn[disabled]{opacity:.65;cursor:progress;transform:none}
 
@@ -264,6 +281,16 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 }
 
 /* ---------- Адаптив ---------- */
+/* Невысокие экраны ноутбуков: форма заявки должна помещаться целиком */
+@media (max-height:740px) and (min-width:981px){
+  .section.request{padding:28px 0}
+  .form-card{padding:20px 26px}
+  .form-title{margin-bottom:10px;font-size:18px}
+  .form-grid{gap:10px 16px}
+  .field textarea{min-height:60px}
+  .request-aside ul{margin-top:16px;gap:8px}
+  .request-phone{margin-top:18px;padding:14px 20px}
+}
 @media (max-width:1100px){
   .nav{gap:18px}
   .header-phone span{display:none}
@@ -275,12 +302,12 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
   .mobile-nav.open{opacity:1;transform:none;visibility:visible}
   .mobile-nav a{display:block;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.07);color:#fff;text-decoration:none;font-weight:600;font-size:17px}
   .mobile-nav .btn{display:flex;width:100%;margin-top:18px;border-bottom:0}
-  .hero-inner{grid-template-columns:1fr;padding-top:48px;padding-bottom:64px}
-  .hero-art{display:none}
+  .hero::before{background:linear-gradient(180deg,rgba(10,19,33,.78) 0%,rgba(10,19,33,.88) 55%,rgba(10,19,33,.96) 100%)}
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
   .adv-grid{grid-template-columns:repeat(2,1fr)}
   .steps{grid-template-columns:repeat(2,1fr)}
   .step:not(:last-child)::after{display:none}
-  .request-wrap{grid-template-columns:1fr;gap:36px}
+  .request-wrap{grid-template-columns:1fr;gap:32px}
   .contacts-grid{grid-template-columns:repeat(2,1fr)}
   .not-found{grid-template-columns:1fr;text-align:left;padding:30px}
   .not-found .btn{justify-self:start}
@@ -294,14 +321,19 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
   .logo-mark{width:36px;height:36px}
   .section{padding:64px 0}
   .section-head{margin-bottom:32px}
-  .hero-inner{padding-top:36px;padding-bottom:48px}
+  .hero{min-height:0}
+  .hero-inner{padding-top:40px;padding-bottom:28px}
+  .hero-bg img{object-position:58% 80%}
   .hero-actions .btn{flex:1 1 100%}
-  .hero-stats{gap:20px 28px}
-  .hero-stats b{font-size:24px}
+  .hero-stats{gap:10px}
+  .hero-stats li{padding:12px 14px}
+  .hero-stats span{font-size:13px}
+  .section.request{padding:56px 0}
+  .eyebrow{font-size:13px}
   .catalog-grid{grid-template-columns:1fr}
   .adv-grid,.steps,.contacts-grid{grid-template-columns:1fr}
   .form-card{padding:24px 18px}
-  .form-grid{grid-template-columns:1fr}
+  .f-third,.f-half{grid-column:span 6}
   .form-actions .btn{width:100%}
   .not-found-icon{width:60px;height:60px}
   .call-fab{display:flex;position:fixed;left:16px;right:16px;bottom:12px;z-index:60;min-height:54px;border-radius:12px;align-items:center;justify-content:center;gap:10px;background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:17px;text-decoration:none;box-shadow:0 10px 28px rgba(0,0,0,.28)}
@@ -384,12 +416,14 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 
 <!-- ================= ПЕРВЫЙ ЭКРАН ================= -->
 <section class="hero" aria-labelledby="hero-title">
-  <svg class="hero-grid" aria-hidden="true" preserveAspectRatio="none">
-    <defs><pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0v48" fill="none" stroke="rgba(255,255,255,.05)"/></pattern></defs>
-    <rect width="100%" height="100%" fill="url(#grid)"/>
-  </svg>
+  <!-- ВРЕМЕННОЕ ФОТО (лицензия CC0, Wikimedia Commons: «Power Cable», автор Claudio Saraceno).
+       Заменить на собственное фото: файлы assets/hero-960.webp, assets/hero-1920.webp, assets/hero-1920.jpg -->
+  <picture class="hero-bg">
+    <source type="image/webp" srcset="assets/hero-960.webp 960w, assets/hero-1920.webp 1920w" sizes="100vw">
+    <img src="assets/hero-1920.jpg" alt="" width="1920" height="1280" fetchpriority="high">
+  </picture>
   <div class="container hero-inner">
-    <div>
+    <div class="hero-content">
       <span class="eyebrow"><svg><use href="#i-bolt"/></svg>Поставки для бизнеса и частных заказчиков</span>
       <h1 id="hero-title">Электротехническая и кабельная продукция <em>с поставкой по всей России</em></h1>
       <p class="hero-lead">Более 10 000 позиций — от кабеля и автоматов до трансформаторов и светотехники. Пришлите список или спецификацию: подберём, рассчитаем и поставим всё по одной заявке.</p>
@@ -397,60 +431,20 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
         <a href="#request" class="btn btn-accent"><svg><use href="#i-send"/></svg>Отправить заявку</a>
         <a href="tel:+79120617770" class="btn btn-outline-light"><svg><use href="#i-phone"/></svg>Позвонить</a>
       </div>
-      <div class="hero-stats">
-        <div><b>10 000+</b><span>позиций в работе</span></div>
-        <div><b>13</b><span>товарных направлений</span></div>
-        <div><b>Вся Россия</b><span>география поставок</span></div>
-      </div>
     </div>
-
-    <!-- Абстрактная графика (можно заменить на фото/иллюстрацию) -->
-    <div class="hero-art" aria-hidden="true">
-      <svg viewBox="0 0 460 460" fill="none">
-        <defs>
-          <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb400"/><stop offset="1" stop-color="#ff7a00"/></linearGradient>
-          <linearGradient id="hg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a4a78"/><stop offset="1" stop-color="#16273f"/></linearGradient>
-        </defs>
-        <circle cx="230" cy="230" r="200" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/>
-        <circle cx="230" cy="230" r="150" stroke="rgba(255,255,255,.1)" stroke-width="1.5" stroke-dasharray="4 8"/>
-        <circle cx="230" cy="230" r="100" fill="url(#hg2)" stroke="rgba(255,255,255,.12)"/>
-        <!-- Кабель: концентрические жилы -->
-        <circle cx="230" cy="230" r="64" fill="#0f1c2e" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
-        <circle cx="206" cy="218" r="17" fill="#ffb400"/>
-        <circle cx="254" cy="218" r="17" fill="#3d7bd9"/>
-        <circle cx="230" cy="256" r="17" fill="#e9eef5"/>
-        <circle cx="206" cy="218" r="7" fill="#c98a00"/>
-        <circle cx="254" cy="218" r="7" fill="#285ca8"/>
-        <circle cx="230" cy="256" r="7" fill="#b9c3d1"/>
-        <!-- Линии от центра -->
-        <path d="M330 230h90M230 130V40M140 290l-70 50M320 300l60 50" stroke="rgba(255,255,255,.18)" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="420" cy="230" r="8" fill="url(#hg1)"/>
-        <circle cx="230" cy="40" r="8" fill="url(#hg1)"/>
-        <circle cx="70" cy="340" r="8" fill="url(#hg1)"/>
-        <circle cx="380" cy="350" r="8" fill="url(#hg1)"/>
-        <!-- Плашки -->
-        <g transform="translate(300 70)">
-          <rect width="128" height="56" rx="12" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.14)"/>
-          <path d="M26 16 17 30h7l-2 10 10-14h-7z" fill="#ffb400"/>
-          <rect x="44" y="18" width="66" height="7" rx="3.5" fill="rgba(255,255,255,.5)"/>
-          <rect x="44" y="31" width="44" height="7" rx="3.5" fill="rgba(255,255,255,.22)"/>
-        </g>
-        <g transform="translate(26 120)">
-          <rect width="128" height="56" rx="12" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.14)"/>
-          <rect x="16" y="15" width="18" height="26" rx="3" stroke="#ffb400" stroke-width="2.5"/>
-          <rect x="44" y="18" width="66" height="7" rx="3.5" fill="rgba(255,255,255,.5)"/>
-          <rect x="44" y="31" width="38" height="7" rx="3.5" fill="rgba(255,255,255,.22)"/>
-        </g>
-        <g transform="translate(250 372)">
-          <rect width="150" height="56" rx="12" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.14)"/>
-          <path d="m18 28 7 7 14-14" stroke="#ffb400" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="52" y="18" width="80" height="7" rx="3.5" fill="rgba(255,255,255,.5)"/>
-          <rect x="52" y="31" width="50" height="7" rx="3.5" fill="rgba(255,255,255,.22)"/>
-        </g>
-      </svg>
-    </div>
+    <ul class="hero-stats">
+      <li><b>10 000+</b><span>позиций в работе</span></li>
+      <li><b>13</b><span>товарных направлений</span></li>
+      <li><b>Вся Россия</b><span>география поставок</span></li>
+      <li><b>С НДС</b><span>полный пакет документов</span></li>
+    </ul>
   </div>
 </section>
+
+<!-- Бегущая строка: содержимое продублировано для бесшовной прокрутки -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track"><span>Кабель и провод<svg><use href="#i-bolt"/></svg></span><span>Кабеленесущие системы<svg><use href="#i-bolt"/></svg></span><span>Низковольтное оборудование<svg><use href="#i-bolt"/></svg></span><span>Щитовое оборудование<svg><use href="#i-bolt"/></svg></span><span>Светотехника<svg><use href="#i-bolt"/></svg></span><span>Электроустановочные изделия<svg><use href="#i-bolt"/></svg></span><span>Кабельная арматура<svg><use href="#i-bolt"/></svg></span><span>Трансформаторы<svg><use href="#i-bolt"/></svg></span><span>Электродвигатели и автоматизация<svg><use href="#i-bolt"/></svg></span><span>Молниезащита и заземление<svg><use href="#i-bolt"/></svg></span><span>Инструмент и СИЗ<svg><use href="#i-bolt"/></svg></span><span>Электрообогрев<svg><use href="#i-bolt"/></svg></span><span>Слаботочные системы<svg><use href="#i-bolt"/></svg></span><span>Кабель и провод<svg><use href="#i-bolt"/></svg></span><span>Кабеленесущие системы<svg><use href="#i-bolt"/></svg></span><span>Низковольтное оборудование<svg><use href="#i-bolt"/></svg></span><span>Щитовое оборудование<svg><use href="#i-bolt"/></svg></span><span>Светотехника<svg><use href="#i-bolt"/></svg></span><span>Электроустановочные изделия<svg><use href="#i-bolt"/></svg></span><span>Кабельная арматура<svg><use href="#i-bolt"/></svg></span><span>Трансформаторы<svg><use href="#i-bolt"/></svg></span><span>Электродвигатели и автоматизация<svg><use href="#i-bolt"/></svg></span><span>Молниезащита и заземление<svg><use href="#i-bolt"/></svg></span><span>Инструмент и СИЗ<svg><use href="#i-bolt"/></svg></span><span>Электрообогрев<svg><use href="#i-bolt"/></svg></span><span>Слаботочные системы<svg><use href="#i-bolt"/></svg></span></div>
+</div>
 
 <!-- ================= КАТАЛОГ ================= -->
 <section class="section" id="catalog" aria-labelledby="catalog-title">
@@ -693,27 +687,28 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
 
     <div class="form-card reveal" id="form-card">
       <form id="lead-form" novalidate>
+        <p class="form-title">Заявка на расчёт</p>
         <div class="form-grid">
-          <div class="field">
+          <div class="field f-third">
             <label for="f-name">Имя <span class="req">*</span></label>
             <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="100">
             <span class="field-error" aria-live="polite"></span>
           </div>
-          <div class="field">
-            <label for="f-company">Компания <span class="opt">(необязательно)</span></label>
-            <input id="f-company" name="company" type="text" autocomplete="organization" maxlength="150">
-          </div>
-          <div class="field">
+          <div class="field f-third">
             <label for="f-phone">Телефон <span class="req">*</span></label>
             <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+7 (___) ___-__-__" required>
             <span class="field-error" aria-live="polite"></span>
           </div>
-          <div class="field">
+          <div class="field f-third">
             <label for="f-email">E-mail <span class="req">*</span></label>
             <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="150">
             <span class="field-error" aria-live="polite"></span>
           </div>
-          <div class="field field-full" id="field-category">
+          <div class="field f-half">
+            <label for="f-company">Компания <span class="opt">(необязательно)</span></label>
+            <input id="f-company" name="company" type="text" autocomplete="organization" maxlength="150">
+          </div>
+          <div class="field f-half" id="field-category">
             <label for="f-category">Категория товаров</label>
             <select id="f-category" name="category">
               <option value="">Выберите направление</option>
@@ -734,16 +729,15 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
               <option>Несколько направлений / другое</option>
             </select>
           </div>
-          <div class="field field-full">
+          <div class="field">
             <label for="f-comment">Комментарий или список товаров</label>
             <textarea id="f-comment" name="comment" maxlength="5000" placeholder="Например: ВВГнг-LS 3×2,5 — 500 м; автомат 1P C16 — 40 шт.; сроки, адрес доставки"></textarea>
           </div>
-          <div class="field field-full">
-            <span style="font-size:14px;font-weight:700;color:var(--graphite)">Файл спецификации <span class="opt" style="font-weight:500;color:var(--muted)">(xls, xlsx, pdf, doc, docx — до 10 МБ)</span></span>
+          <div class="field">
             <label class="file-drop" id="file-drop">
-              <input type="file" id="f-file" name="file" accept=".xls,.xlsx,.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+              <input type="file" id="f-file" name="file" aria-label="Файл спецификации" accept=".xls,.xlsx,.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
               <svg aria-hidden="true"><use href="#i-upload"/></svg>
-              <span class="file-drop-text" id="file-text"><b>Прикрепите файл</b> или перетащите его сюда</span>
+              <span class="file-drop-text" id="file-text"><b>Прикрепите спецификацию</b> · xls, xlsx, pdf, doc, docx до 10 МБ</span>
             </label>
             <span class="field-error" id="file-error" aria-live="polite"></span>
           </div>
@@ -757,7 +751,7 @@ section[id],footer[id]{scroll-margin-top:calc(var(--header-h) + 8px)}
           <div class="field-full">
             <label class="consent" id="consent-label">
               <input type="checkbox" name="consent" id="f-consent" value="yes" required>
-              <span>Я даю согласие на обработку персональных данных в соответствии с Федеральным законом № 152-ФЗ «О персональных данных» и принимаю условия <a href="politika-konfidentsialnosti.html" target="_blank" rel="noopener">политики конфиденциальности</a>.</span>
+              <span>Даю согласие на обработку персональных данных в соответствии с 152-ФЗ «О персональных данных» и принимаю <a href="politika-konfidentsialnosti.html" target="_blank" rel="noopener">политику конфиденциальности</a>.</span>
             </label>
           </div>
 
