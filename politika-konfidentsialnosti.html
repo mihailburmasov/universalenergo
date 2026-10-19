@@ -35,6 +35,12 @@ ul{padding-left:22px}
 .footer a{color:rgba(255,255,255,.7);text-decoration:none}
 .footer a:hover{color:#fff;text-decoration:underline}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.cookie{position:fixed;left:24px;bottom:24px;z-index:70;max-width:440px;display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:14px;background:rgba(15,28,46,.97);color:rgba(255,255,255,.85);font-size:14px;line-height:1.45;box-shadow:0 18px 40px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1)}
+.cookie[hidden]{display:none}
+.cookie p{margin:0;color:inherit}
+.cookie a{color:var(--accent)}
+.cookie button{flex:none;min-height:40px;padding:0 18px;border:0;border-radius:10px;background:var(--accent);color:#1a1300;font:inherit;font-weight:700;cursor:pointer}
+@media (max-width:640px){.cookie{left:12px;right:12px;bottom:12px;max-width:none;flex-wrap:wrap}}
 @media (max-width:640px){.container{padding:0 16px}.logo{font-size:16px}}
 </style>
 </head>
@@ -42,7 +48,7 @@ ul{padding-left:22px}
 <header class="header">
   <div class="container">
     <a class="logo" href="index.html"><span><svg width="20" height="20" viewBox="0 0 24 24"><path fill="#1a1300" d="M13.5 2 4 14h6.5L9 22l11-13h-6.6z"/></svg></span>Универсалэнерго</a>
-    <a class="back" href="index.html">← На главную</a>
+    <a class="back" href="index.html">← На&nbsp;главную</a>
   </div>
 </header>
 
@@ -51,47 +57,50 @@ ul{padding-left:22px}
   <p class="meta">Редакция от <span class="placeholder">[ДАТА]</span></p>
 
   <!-- ЧЕРНОВИК: текст нужно проверить и дополнить юристу перед публикацией -->
-  <div class="draft">Черновик политики. Перед запуском сайта текст должен проверить юрист и дополнить реквизиты оператора.</div>
+  <div class="draft">Черновик политики. Перед запуском сайта текст должен проверить юрист и&nbsp;дополнить реквизиты оператора.</div>
 
   <h2>1. Общие положения</h2>
-  <p>Настоящая политика определяет порядок обработки и защиты персональных данных посетителей сайта в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</p>
-  <p>Оператор персональных данных — ООО «АПК «Универсалэнерго», ИНН 5904287660, адрес: <span class="placeholder">[ЮРИДИЧЕСКИЙ АДРЕС]</span>, e-mail: <span class="placeholder">[EMAIL]</span>, телефон: <a href="tel:+79120617770">+7 (912) 061-77-70</a>.</p>
+  <p>Настоящая политика определяет порядок обработки и&nbsp;защиты персональных данных посетителей сайта в&nbsp;соответствии с&nbsp;Федеральным законом от&nbsp;27.07.2006 №&nbsp;152-ФЗ «О&nbsp;персональных данных».</p>
+  <p>Оператор персональных данных&nbsp;— ООО «АПК «Универсалэнерго», ИНН 5904287660, адрес: <span class="placeholder">[ЮРИДИЧЕСКИЙ АДРЕС]</span>, e-mail: <span class="placeholder">[EMAIL]</span>, телефон: <a href="tel:+79120617770">+7 (912) 061-77-70</a>.</p>
 
   <h2>2. Какие данные мы обрабатываем</h2>
-  <p>Через форму заявки на сайте пользователь может передать:</p>
+  <p>Через форму заявки на&nbsp;сайте пользователь может передать:</p>
   <ul>
     <li>имя;</li>
-    <li>название компании (по желанию);</li>
+    <li>название компании (по&nbsp;желанию);</li>
     <li>номер телефона;</li>
     <li>адрес электронной почты;</li>
-    <li>текст комментария или список товаров;</li>
+    <li>текст комментария или&nbsp;список товаров;</li>
     <li>прикреплённый файл спецификации.</li>
   </ul>
 
   <h2>3. Цели обработки</h2>
   <ul>
-    <li>обработка заявки, подбор продукции и подготовка коммерческого предложения;</li>
-    <li>связь с пользователем по его заявке;</li>
-    <li>заключение и исполнение договора поставки.</li>
+    <li>обработка заявки, подбор продукции и&nbsp;подготовка коммерческого предложения;</li>
+    <li>связь с&nbsp;пользователем по&nbsp;его заявке;</li>
+    <li>заключение и&nbsp;исполнение договора поставки.</li>
   </ul>
 
   <h2>4. Правовые основания</h2>
-  <p>Обработка осуществляется на основании согласия пользователя, которое он даёт, отмечая соответствующий пункт в форме заявки, а также для заключения и исполнения договора, стороной которого является пользователь.</p>
+  <p>Обработка осуществляется на&nbsp;основании согласия пользователя, которое он даёт, отмечая соответствующий пункт в&nbsp;форме заявки, а&nbsp;также для&nbsp;заключения и&nbsp;исполнения договора, стороной которого является пользователь.</p>
 
   <h2>5. Сроки хранения</h2>
-  <p>Персональные данные хранятся не дольше, чем этого требуют цели обработки, либо до отзыва согласия пользователем, если иное не предусмотрено законодательством РФ. Срок: <span class="placeholder">[СРОК]</span>.</p>
+  <p>Персональные данные хранятся не&nbsp;дольше, чем этого требуют цели обработки, либо до&nbsp;отзыва согласия пользователем, если иное не&nbsp;предусмотрено законодательством РФ. Срок: <span class="placeholder">[СРОК]</span>.</p>
 
   <h2>6. Передача третьим лицам</h2>
-  <p>Оператор не передаёт персональные данные третьим лицам, за исключением случаев, предусмотренных законодательством РФ, и случаев, необходимых для исполнения договора (например, передача контактных данных транспортной компании для доставки).</p>
+  <p>Оператор не&nbsp;передаёт персональные данные третьим лицам, за&nbsp;исключением случаев, предусмотренных законодательством РФ, и&nbsp;случаев, необходимых для&nbsp;исполнения договора (например, передача контактных данных транспортной компании для&nbsp;доставки).</p>
 
   <h2>7. Права пользователя</h2>
-  <p>Пользователь вправе получить сведения об обработке своих данных, потребовать их уточнения, блокирования или удаления, а также отозвать согласие, направив запрос на e-mail <span class="placeholder">[EMAIL]</span>.</p>
+  <p>Пользователь вправе получить сведения об&nbsp;обработке своих данных, потребовать их уточнения, блокирования или&nbsp;удаления, а&nbsp;также отозвать согласие, направив запрос на&nbsp;e-mail <span class="placeholder">[EMAIL]</span>.</p>
 
   <h2>8. Cookie</h2>
-  <p>Сайт не использует системы веб-аналитики и рекламного отслеживания. Если они будут подключены, этот раздел будет обновлён.</p>
+  <p>Сайт использует только технические cookie и&nbsp;локальное хранилище браузера, необходимые для&nbsp;его работы,&nbsp;— например, чтобы запомнить, что&nbsp;вы закрыли уведомление о&nbsp;cookie.</p>
+  <p>Для&nbsp;отображения шрифтов сайт загружает их с&nbsp;сервиса Google Fonts, при этом сервису передаётся IP-адрес посетителя.</p>
+  <p>Системы веб-аналитики и&nbsp;рекламного отслеживания на&nbsp;сайте не&nbsp;используются. Если они будут подключены, этот раздел будет обновлён.</p>
+  <p>Отключить cookie можно в&nbsp;настройках браузера; на&nbsp;работу сайта это не&nbsp;повлияет.</p>
 
   <h2>9. Защита данных</h2>
-  <p>Оператор принимает необходимые правовые, организационные и технические меры для защиты персональных данных от неправомерного доступа, изменения, раскрытия или уничтожения.</p>
+  <p>Оператор принимает необходимые правовые, организационные и&nbsp;технические меры для&nbsp;защиты персональных данных от&nbsp;неправомерного доступа, изменения, раскрытия или&nbsp;уничтожения.</p>
 </main>
 
 <footer class="footer">
@@ -99,10 +108,28 @@ ul{padding-left:22px}
     <span>© <span id="year">2026</span> ООО «АПК «Универсалэнерго» · ИНН 5904287660</span>
     <div class="footer-bottom-links">
       <a href="politika-konfidentsialnosti.html">Политика конфиденциальности</a>
-      <a class="footer-credit" href="https://sitomika.ru/?utm_source=universalenergo&amp;utm_medium=footer&amp;utm_campaign=client-sites" target="_blank" rel="noopener">Разработано в sitomika.ru</a>
+      <a class="footer-credit" href="https://sitomika.ru/?utm_source=universalenergo&amp;utm_medium=footer&amp;utm_campaign=client-sites" target="_blank" rel="noopener">Разработано в&nbsp;sitomika.ru</a>
     </div>
   </div>
 </footer>
-<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<!-- Уведомление о cookie: то же, что на главной; выбор общий через localStorage -->
+<div class="cookie" id="cookie" role="region" aria-label="Уведомление о cookie" hidden>
+  <p>Мы используем cookie и&nbsp;похожие технологии, чтобы сайт работал корректно. Подробности&nbsp;— на&nbsp;этой странице, в&nbsp;разделе 8.</p>
+  <button type="button" id="cookie-ok">Хорошо</button>
+</div>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+(() => {
+  const box = document.getElementById("cookie");
+  let ok = false;
+  try { ok = localStorage.getItem("cookie-ok") === "1"; } catch (e) {}
+  if (ok) return;
+  box.hidden = false;
+  document.getElementById("cookie-ok").addEventListener("click", () => {
+    try { localStorage.setItem("cookie-ok", "1"); } catch (e) {}
+    box.hidden = true;
+  });
+})();
+</script>
 </body>
 </html>

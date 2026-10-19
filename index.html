@@ -141,24 +141,50 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
 .section{padding:96px 0}
 .section-alt{background:var(--bg)}
 .section-head{max-width:760px;margin-bottom:48px}
-.section-kicker{display:inline-block;font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:12px}
+.section-kicker{display:inline-flex;align-items:center;gap:10px;font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:12px}
+.section-kicker::before{content:"";width:28px;height:2px;background:currentColor;border-radius:2px}
 .section-head h2{font-size:clamp(28px,3.2vw,42px)}
 .section-head p{margin-top:16px;font-size:18px;color:var(--muted)}
 
 /* ---------- Каталог ---------- */
-.catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-.cat-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:box-shadow .25s,transform .25s,border-color .25s}
-.cat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:#d3d9e2}
-.cat-icon{width:56px;height:56px;border-radius:12px;background:var(--navy);color:var(--accent);display:grid;place-items:center;margin-bottom:18px}
+.catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.cat-card{position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:box-shadow .3s,transform .3s,border-color .3s}
+/* Подсветка, следующая за курсором (координаты задаёт JS) */
+.cat-card::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .3s;background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%),rgba(255,180,0,.16),transparent 60%)}
+.cat-card:hover::before{opacity:1}
+.cat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px);border-color:rgba(255,145,0,.45)}
+.cat-num{position:absolute;top:20px;right:22px;font-size:13px;font-weight:800;letter-spacing:.08em;color:#b6bfcc;transition:color .3s}
+.cat-card:hover .cat-num{color:var(--accent-2)}
+.cat-icon{width:56px;height:56px;border-radius:12px;background:var(--navy);color:var(--accent);display:grid;place-items:center;margin-bottom:18px;transition:background .3s,color .3s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.cat-card:hover .cat-icon{background:var(--accent);color:var(--navy);transform:rotate(-8deg) scale(1.06)}
 .cat-icon svg{width:30px;height:30px}
-.cat-card h3{font-size:20px;letter-spacing:-.01em;margin-bottom:12px}
+.cat-card h3{font-size:20px;letter-spacing:-.01em;margin-bottom:12px;padding-right:28px}
 .cat-card ul{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:6px;color:var(--muted);font-size:15px;line-height:1.45}
 .cat-card li{position:relative;padding-left:16px}
 .cat-card li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:2px;background:var(--accent)}
 .cat-card .btn{margin-top:auto;align-self:flex-start}
+.btn .arrow{width:16px;height:16px;transition:transform .25s}
+.btn:hover .arrow{transform:translateX(4px)}
 
-.not-found{margin-top:28px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;padding:36px 40px;border-radius:calc(var(--radius) + 4px);background:linear-gradient(120deg,var(--navy) 0%,var(--navy-3) 100%);color:#fff;position:relative;overflow:hidden}
-.not-found::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(255,180,0,.22),rgba(255,180,0,0) 70%)}
+/* Крупные карточки с фото */
+.cat-wide{grid-column:span 2}
+.cat-photo{background:var(--navy);border-color:transparent;color:#fff;min-height:340px;justify-content:flex-end}
+.cat-photo .cat-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.cat-photo::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(10,19,33,.94) 0%,rgba(10,19,33,.78) 45%,rgba(10,19,33,.25) 100%)}
+.cat-photo:hover .cat-bg{transform:scale(1.06)}
+.cat-photo:hover{border-color:rgba(255,180,0,.6)}
+.cat-photo .cat-icon{background:var(--accent);color:var(--navy)}
+.cat-photo h3{font-size:26px;max-width:420px}
+.cat-photo ul{color:rgba(255,255,255,.8);display:grid;grid-template-columns:repeat(2,minmax(0,max-content));gap:6px 28px}
+.cat-photo .cat-num{color:rgba(255,255,255,.55)}
+.cat-photo .btn-dark{background:var(--accent);color:var(--accent-ink)}
+.cat-photo .btn-dark:hover{background:#ffc22e}
+
+.not-found{margin-top:28px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;padding:44px 44px;border-radius:calc(var(--radius) + 4px);background:var(--navy);color:#fff;position:relative;overflow:hidden;isolation:isolate}
+.not-found-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.not-found::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,rgba(10,19,33,.96) 0%,rgba(16,32,56,.88) 50%,rgba(10,19,33,.7) 100%)}
+.not-found::after{content:"";position:absolute;right:-80px;top:-80px;width:300px;height:300px;border-radius:50%;z-index:-1;background:radial-gradient(circle,rgba(255,180,0,.28),rgba(255,180,0,0) 70%);animation:glow 6s ease-in-out infinite alternate}
+@keyframes glow{to{transform:translate(-60px,40px) scale(1.15)}}
 .not-found-icon{width:72px;height:72px;border-radius:16px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center}
 .not-found-icon svg{width:36px;height:36px}
 .not-found h3{font-size:clamp(22px,2.4vw,28px)}
@@ -166,26 +192,45 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
 .not-found .btn{position:relative;z-index:1}
 
 /* ---------- Бренды ---------- */
-.brands{display:flex;flex-wrap:wrap;gap:12px}
-.brand{padding:12px 20px;border:1px solid var(--line);border-radius:10px;background:#fff;font-weight:700;font-size:16px;color:var(--graphite)}
-.brand-more{border-style:dashed;color:var(--muted);font-weight:600}
-.brands-note{margin-top:22px;color:var(--muted);font-size:15px}
+.brand-marquee{display:flex;flex-direction:column;gap:14px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.brand-row{display:flex;overflow:hidden}
+.brand-track{display:flex;flex:none;gap:14px;padding-right:14px;animation:ticker 50s linear infinite}
+.brand-row.reverse .brand-track{animation-direction:reverse;animation-duration:60s}
+.brand-marquee:hover .brand-track{animation-play-state:paused}
+.brand{flex:none;padding:16px 28px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:800;font-size:clamp(17px,1.6vw,22px);letter-spacing:-.01em;color:var(--graphite);white-space:nowrap;transition:color .2s,border-color .2s,transform .2s}
+.brand:hover{color:var(--accent-2);border-color:rgba(255,145,0,.5);transform:translateY(-2px)}
+.brand-alt{background:var(--navy);color:#fff;border-color:var(--navy)}
+.brands-note{margin-top:26px;color:var(--muted);font-size:15px}
 
 /* ---------- Преимущества ---------- */
+.section-dark{position:relative;overflow:hidden;isolation:isolate;background:var(--navy);color:#fff}
+.section-dark::before{content:"";position:absolute;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 0%,#000 30%,transparent 75%)}
+.section-dark::after{content:"";position:absolute;z-index:-1;width:620px;height:620px;left:-200px;bottom:-320px;border-radius:50%;background:radial-gradient(circle,rgba(255,180,0,.16),transparent 65%)}
+.section-dark .section-kicker{color:var(--accent)}
+.section-dark .section-head p{color:rgba(255,255,255,.7)}
 .adv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.adv{background:#fff;border-radius:var(--radius);padding:30px;border:1px solid var(--line)}
-.adv-icon{width:48px;height:48px;border-radius:12px;background:rgba(255,180,0,.14);color:var(--accent-2);display:grid;place-items:center;margin-bottom:18px}
+.adv{position:relative;overflow:hidden;border-radius:var(--radius);padding:30px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);transition:border-color .3s,background .3s,transform .3s}
+.adv:hover{border-color:rgba(255,180,0,.5);background:rgba(255,255,255,.07);transform:translateY(-4px)}
+.adv-num{position:absolute;right:18px;top:6px;font-size:76px;font-weight:800;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.12);transition:-webkit-text-stroke-color .3s}
+.adv:hover .adv-num{-webkit-text-stroke-color:rgba(255,180,0,.45)}
+.adv-icon{width:52px;height:52px;border-radius:12px;background:rgba(255,180,0,.14);color:var(--accent);display:grid;place-items:center;margin-bottom:20px;transition:background .3s,color .3s}
+.adv:hover .adv-icon{background:var(--accent);color:var(--navy)}
 .adv-icon svg{width:26px;height:26px}
-.adv h3{font-size:19px;margin-bottom:10px;letter-spacing:-.01em}
-.adv p{color:var(--muted);font-size:15.5px}
+.adv h3{font-size:19px;margin-bottom:10px;letter-spacing:-.01em;position:relative}
+.adv p{color:rgba(255,255,255,.68);font-size:15.5px;position:relative}
 
 /* ---------- Шаги ---------- */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;counter-reset:step;list-style:none;margin:0;padding:0}
-.step{position:relative;padding:28px 24px 26px;border-radius:var(--radius);background:var(--bg);border:1px solid var(--line)}
-.step-num{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--navy);color:var(--accent);font-weight:800;font-size:18px;margin-bottom:18px}
+.steps{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;list-style:none;margin:0;padding:0}
+.steps-line{position:absolute;left:12.5%;right:12.5%;top:52px;height:3px;border-radius:3px;background:#dfe4eb;overflow:hidden}
+.steps-line::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:scaleX(0);transform-origin:left;transition:transform 1.8s cubic-bezier(.65,0,.35,1) .3s}
+.steps.visible .steps-line::after{transform:scaleX(1)}
+.step{position:relative;text-align:center;padding:24px 22px 26px;border-radius:var(--radius);background:#fff;border:1px solid var(--line);transition:box-shadow .3s,transform .3s}
+.step:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.step-num{position:relative;display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--navy);color:var(--accent);font-weight:800;font-size:22px;margin-bottom:16px;box-shadow:0 0 0 6px #fff,0 0 0 7px var(--line)}
+.step-num::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid var(--accent);opacity:0;transform:scale(.8);transition:opacity .4s,transform .4s}
+.step:hover .step-num::after{opacity:1;transform:scale(1)}
 .step h3{font-size:19px;margin-bottom:8px;letter-spacing:-.01em}
 .step p{color:var(--muted);font-size:15.5px}
-.step:not(:last-child)::after{content:"";position:absolute;top:49px;right:-20px;width:20px;height:2px;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 10px)}
 
 /* ---------- Форма ---------- */
 .request{background:linear-gradient(180deg,var(--navy) 0%,#132439 100%);color:#fff}
@@ -268,6 +313,13 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
 .footer-bottom-links a{color:rgba(255,255,255,.7);text-decoration:none}
 .footer-bottom-links a:hover{color:#fff;text-decoration:underline}
 
+/* ---------- Уведомление о cookie ---------- */
+.cookie{position:fixed;left:24px;bottom:24px;z-index:70;max-width:440px;display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:14px;background:rgba(15,28,46,.97);color:rgba(255,255,255,.85);font-size:14px;line-height:1.45;box-shadow:0 18px 40px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);transform:translateY(20px);opacity:0;transition:transform .4s,opacity .4s}
+.cookie.show{transform:none;opacity:1}
+.cookie[hidden]{display:none}
+.cookie a{color:var(--accent)}
+.cookie .btn{min-height:40px;padding:0 18px;font-size:14px;flex:none}
+
 /* ---------- Мобильная кнопка «Позвонить» ---------- */
 .call-fab{display:none}
 
@@ -296,6 +348,9 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   .header-phone span{display:none}
 }
 @media (max-width:980px){
+  .catalog-grid{grid-template-columns:repeat(2,1fr);grid-auto-flow:dense}
+  .steps-line{display:none}
+  .not-found{padding:32px 30px}
   .nav,.header-phone,.header .btn{display:none}
   .burger{display:grid}
   .mobile-nav{display:block;position:fixed;top:var(--header-h);left:0;right:0;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:12px 24px 24px;transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .2s,transform .2s,visibility .2s;box-shadow:0 20px 40px rgba(0,0,0,.3)}
@@ -332,6 +387,11 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   .eyebrow{font-size:13px}
   .catalog-grid{grid-template-columns:1fr}
   .adv-grid,.steps,.contacts-grid{grid-template-columns:1fr}
+  .cat-wide{grid-column:auto}
+  .cat-photo{min-height:300px}
+  .cat-photo h3{font-size:22px}
+  .cat-photo ul{grid-template-columns:1fr}
+  .cookie{left:12px;right:12px;bottom:76px;max-width:none;flex-wrap:wrap;gap:10px 14px}
   .form-card{padding:24px 18px}
   .f-third,.f-half{grid-column:span 6}
   .form-actions .btn{width:100%}
@@ -388,12 +448,12 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   <div class="container header-inner">
     <a href="#top" class="logo" aria-label="АПК «Универсалэнерго» — на главную">
       <span class="logo-mark"><svg style="color:var(--accent-ink)"><use href="#i-bolt"/></svg></span>
-      <span class="logo-text"><small>АПК · электротехника и кабель</small><strong>Универсалэнерго</strong></span>
+      <span class="logo-text"><small>АПК · электротехника и&nbsp;кабель</small><strong>Универсалэнерго</strong></span>
     </a>
     <nav class="nav" aria-label="Основное меню">
       <a href="#catalog">Каталог</a>
       <a href="#advantages">Преимущества</a>
-      <a href="#process">Как мы работаем</a>
+      <a href="#process">Как&nbsp;мы работаем</a>
       <a href="#contacts">Контакты</a>
     </nav>
     <a class="header-phone js-phone" href="tel:+79120617770"><svg><use href="#i-phone"/></svg><span>+7 (912) 061-77-70</span></a>
@@ -405,7 +465,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   <nav class="mobile-nav" id="mobile-nav" aria-label="Мобильное меню">
     <a href="#catalog">Каталог</a>
     <a href="#advantages">Преимущества</a>
-    <a href="#process">Как мы работаем</a>
+    <a href="#process">Как&nbsp;мы работаем</a>
     <a href="#contacts">Контакты</a>
     <a href="tel:+79120617770">+7 (912) 061-77-70</a>
     <a href="#request" class="btn btn-accent">Оставить заявку</a>
@@ -424,26 +484,26 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   </picture>
   <div class="container hero-inner">
     <div class="hero-content">
-      <span class="eyebrow"><svg><use href="#i-bolt"/></svg>Поставки для бизнеса и частных заказчиков</span>
-      <h1 id="hero-title">Электротехническая и кабельная продукция <em>с поставкой по всей России</em></h1>
-      <p class="hero-lead">Более 10 000 позиций — от кабеля и автоматов до трансформаторов и светотехники. Пришлите список или спецификацию: подберём, рассчитаем и поставим всё по одной заявке.</p>
+      <span class="eyebrow"><svg><use href="#i-bolt"/></svg>Поставки для&nbsp;бизнеса и&nbsp;частных заказчиков</span>
+      <h1 id="hero-title">Электротехническая и&nbsp;кабельная продукция <em>с&nbsp;поставкой по&nbsp;всей России</em></h1>
+      <p class="hero-lead">Более 10&nbsp;000 позиций&nbsp;— от&nbsp;кабеля и&nbsp;автоматов до&nbsp;трансформаторов и&nbsp;светотехники. Пришлите список или&nbsp;спецификацию: подберём, рассчитаем и&nbsp;поставим всё по&nbsp;одной заявке.</p>
       <div class="hero-actions">
         <a href="#request" class="btn btn-accent"><svg><use href="#i-send"/></svg>Отправить заявку</a>
         <a href="tel:+79120617770" class="btn btn-outline-light"><svg><use href="#i-phone"/></svg>Позвонить</a>
       </div>
     </div>
     <ul class="hero-stats">
-      <li><b>10 000+</b><span>позиций в работе</span></li>
+      <li><b>10&nbsp;000+</b><span>позиций в&nbsp;работе</span></li>
       <li><b>13</b><span>товарных направлений</span></li>
       <li><b>Вся Россия</b><span>география поставок</span></li>
-      <li><b>С НДС</b><span>полный пакет документов</span></li>
+      <li><b>С&nbsp;НДС</b><span>полный пакет документов</span></li>
     </ul>
   </div>
 </section>
 
 <!-- Бегущая строка: содержимое продублировано для бесшовной прокрутки -->
 <div class="ticker" aria-hidden="true">
-  <div class="ticker-track"><span>Кабель и провод<svg><use href="#i-bolt"/></svg></span><span>Кабеленесущие системы<svg><use href="#i-bolt"/></svg></span><span>Низковольтное оборудование<svg><use href="#i-bolt"/></svg></span><span>Щитовое оборудование<svg><use href="#i-bolt"/></svg></span><span>Светотехника<svg><use href="#i-bolt"/></svg></span><span>Электроустановочные изделия<svg><use href="#i-bolt"/></svg></span><span>Кабельная арматура<svg><use href="#i-bolt"/></svg></span><span>Трансформаторы<svg><use href="#i-bolt"/></svg></span><span>Электродвигатели и автоматизация<svg><use href="#i-bolt"/></svg></span><span>Молниезащита и заземление<svg><use href="#i-bolt"/></svg></span><span>Инструмент и СИЗ<svg><use href="#i-bolt"/></svg></span><span>Электрообогрев<svg><use href="#i-bolt"/></svg></span><span>Слаботочные системы<svg><use href="#i-bolt"/></svg></span><span>Кабель и провод<svg><use href="#i-bolt"/></svg></span><span>Кабеленесущие системы<svg><use href="#i-bolt"/></svg></span><span>Низковольтное оборудование<svg><use href="#i-bolt"/></svg></span><span>Щитовое оборудование<svg><use href="#i-bolt"/></svg></span><span>Светотехника<svg><use href="#i-bolt"/></svg></span><span>Электроустановочные изделия<svg><use href="#i-bolt"/></svg></span><span>Кабельная арматура<svg><use href="#i-bolt"/></svg></span><span>Трансформаторы<svg><use href="#i-bolt"/></svg></span><span>Электродвигатели и автоматизация<svg><use href="#i-bolt"/></svg></span><span>Молниезащита и заземление<svg><use href="#i-bolt"/></svg></span><span>Инструмент и СИЗ<svg><use href="#i-bolt"/></svg></span><span>Электрообогрев<svg><use href="#i-bolt"/></svg></span><span>Слаботочные системы<svg><use href="#i-bolt"/></svg></span></div>
+  <div class="ticker-track"><span>Кабель и&nbsp;провод<svg><use href="#i-bolt"/></svg></span><span>Кабеленесущие системы<svg><use href="#i-bolt"/></svg></span><span>Низковольтное оборудование<svg><use href="#i-bolt"/></svg></span><span>Щитовое оборудование<svg><use href="#i-bolt"/></svg></span><span>Светотехника<svg><use href="#i-bolt"/></svg></span><span>Электроустановочные изделия<svg><use href="#i-bolt"/></svg></span><span>Кабельная арматура<svg><use href="#i-bolt"/></svg></span><span>Трансформаторы<svg><use href="#i-bolt"/></svg></span><span>Электродвигатели и&nbsp;автоматизация<svg><use href="#i-bolt"/></svg></span><span>Молниезащита и&nbsp;заземление<svg><use href="#i-bolt"/></svg></span><span>Инструмент и&nbsp;СИЗ<svg><use href="#i-bolt"/></svg></span><span>Электрообогрев<svg><use href="#i-bolt"/></svg></span><span>Слаботочные системы<svg><use href="#i-bolt"/></svg></span><span>Кабель и&nbsp;провод<svg><use href="#i-bolt"/></svg></span><span>Кабеленесущие системы<svg><use href="#i-bolt"/></svg></span><span>Низковольтное оборудование<svg><use href="#i-bolt"/></svg></span><span>Щитовое оборудование<svg><use href="#i-bolt"/></svg></span><span>Светотехника<svg><use href="#i-bolt"/></svg></span><span>Электроустановочные изделия<svg><use href="#i-bolt"/></svg></span><span>Кабельная арматура<svg><use href="#i-bolt"/></svg></span><span>Трансформаторы<svg><use href="#i-bolt"/></svg></span><span>Электродвигатели и&nbsp;автоматизация<svg><use href="#i-bolt"/></svg></span><span>Молниезащита и&nbsp;заземление<svg><use href="#i-bolt"/></svg></span><span>Инструмент и&nbsp;СИЗ<svg><use href="#i-bolt"/></svg></span><span>Электрообогрев<svg><use href="#i-bolt"/></svg></span><span>Слаботочные системы<svg><use href="#i-bolt"/></svg></span></div>
 </div>
 
 <!-- ================= КАТАЛОГ ================= -->
@@ -451,111 +511,130 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   <div class="container">
     <div class="section-head reveal">
       <span class="section-kicker">Каталог направлений</span>
-      <h2 id="catalog-title">Поставим любую электротехническую и кабельную продукцию</h2>
-      <p>Ниже — основные направления. Полный ассортимент насчитывает более 10 000 позиций, поэтому проще прислать список или спецификацию: мы подберём и рассчитаем всё сами.</p>
+      <h2 id="catalog-title">Поставим любую электротехническую и&nbsp;кабельную продукцию</h2>
+      <p>Ниже&nbsp;— основные направления. Полный ассортимент насчитывает более 10&nbsp;000 позиций, поэтому проще прислать список или&nbsp;спецификацию: мы подберём и&nbsp;рассчитаем всё сами.</p>
     </div>
 
     <!-- Значение data-category у кнопки должно совпадать с value в списке категорий формы -->
     <div class="catalog-grid">
-      <article class="cat-card reveal">
+      <article class="cat-card cat-photo cat-wide reveal">
+        <!-- ВРЕМЕННОЕ ФОТО (CC0, WordPress Photo Directory). Заменить: assets/cable.webp -->
+        <img class="cat-bg" src="assets/cable.webp" alt="" loading="lazy" width="1200" height="900">
+        <span class="cat-num" aria-hidden="true">01</span>
         <div class="cat-icon"><svg><use href="#c-cable"/></svg></div>
-        <h3>Кабель и провод</h3>
+        <h3>Кабель и&nbsp;провод</h3>
         <ul><li>Силовой кабель</li><li>Контрольный кабель</li><li>Монтажный провод</li><li>Кабель связи</li><li>Самонесущий провод СИП</li><li>Огнестойкий нг-LS / FRLS</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Кабель и провод">Запросить</button>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Кабель и провод">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">02</span>
         <div class="cat-icon"><svg><use href="#c-tray"/></svg></div>
         <h3>Кабеленесущие системы</h3>
-        <ul><li>Лотки металлические и перфорированные</li><li>Кабель-каналы</li><li>Гофрированные трубы</li><li>Трубы ПНД</li><li>Металлорукав</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Кабеленесущие системы">Запросить</button>
+        <ul><li>Лотки металлические и&nbsp;перфорированные</li><li>Кабель-каналы</li><li>Гофрированные трубы</li><li>Трубы ПНД</li><li>Металлорукав</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Кабеленесущие системы">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">03</span>
         <div class="cat-icon"><svg><use href="#c-breaker"/></svg></div>
         <h3>Низковольтное оборудование</h3>
-        <ul><li>Автоматические выключатели</li><li>УЗО и дифавтоматы</li><li>Контакторы и пускатели</li><li>Реле</li><li>Рубильники и выключатели нагрузки</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Низковольтное оборудование">Запросить</button>
+        <ul><li>Автоматические выключатели</li><li>УЗО и&nbsp;дифавтоматы</li><li>Контакторы и&nbsp;пускатели</li><li>Реле</li><li>Рубильники и&nbsp;выключатели нагрузки</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Низковольтное оборудование">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">04</span>
         <div class="cat-icon"><svg><use href="#c-panel"/></svg></div>
         <h3>Щитовое оборудование</h3>
-        <ul><li>Корпуса щитов</li><li>Боксы и щитки</li><li>DIN-рейки</li><li>Шины и шинодержатели</li><li>Клеммы и клеммные колодки</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Щитовое оборудование">Запросить</button>
+        <ul><li>Корпуса щитов</li><li>Боксы и&nbsp;щитки</li><li>DIN-рейки</li><li>Шины и&nbsp;шинодержатели</li><li>Клеммы и&nbsp;клеммные колодки</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Щитовое оборудование">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">05</span>
         <div class="cat-icon"><svg><use href="#c-light"/></svg></div>
         <h3>Светотехника</h3>
         <ul><li>Светодиодные светильники</li><li>Прожекторы</li><li>Уличное освещение</li><li>Промышленное освещение</li><li>Лампы</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Светотехника">Запросить</button>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Светотехника">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">06</span>
         <div class="cat-icon"><svg><use href="#c-socket"/></svg></div>
         <h3>Электроустановочные изделия</h3>
-        <ul><li>Розетки</li><li>Выключатели</li><li>Рамки и накладки</li><li>Удлинители и сетевые фильтры</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Электроустановочные изделия">Запросить</button>
+        <ul><li>Розетки</li><li>Выключатели</li><li>Рамки и&nbsp;накладки</li><li>Удлинители и&nbsp;сетевые фильтры</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Электроустановочные изделия">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">07</span>
         <div class="cat-icon"><svg><use href="#c-lug"/></svg></div>
         <h3>Кабельная арматура</h3>
-        <ul><li>Кабельные муфты</li><li>Наконечники</li><li>Гильзы</li><li>Термоусадочные трубки</li><li>Хомуты и стяжки</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Кабельная арматура">Запросить</button>
+        <ul><li>Кабельные муфты</li><li>Наконечники</li><li>Гильзы</li><li>Термоусадочные трубки</li><li>Хомуты и&nbsp;стяжки</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Кабельная арматура">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
-        <div class="cat-icon"><svg><use href="#c-hv"/></svg></div>
-        <h3>Высоковольтное оборудование и трансформаторы</h3>
-        <ul><li>Силовые трансформаторы</li><li>Трансформаторные подстанции</li><li>Ячейки и выключатели нагрузки</li><li>Разъединители</li><li>Ограничители перенапряжения</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Высоковольтное оборудование и трансформаторы">Запросить</button>
-      </article>
-
-      <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">08</span>
         <div class="cat-icon"><svg><use href="#c-motor"/></svg></div>
-        <h3>Электродвигатели, приводы и автоматизация</h3>
+        <h3>Электродвигатели, приводы и&nbsp;автоматизация</h3>
         <ul><li>Электродвигатели</li><li>Частотные преобразователи</li><li>Устройства плавного пуска</li><li>Датчики</li><li>Контроллеры</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Электродвигатели, приводы и автоматизация">Запросить</button>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Электродвигатели, приводы и автоматизация">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </article>
+
+      <article class="cat-card cat-photo cat-wide reveal">
+        <!-- ВРЕМЕННОЕ ФОТО (CC0, WordPress Photo Directory). Заменить: assets/high-voltage.webp -->
+        <img class="cat-bg" src="assets/high-voltage.webp" alt="" loading="lazy" width="1100" height="825">
+        <span class="cat-num" aria-hidden="true">09</span>
+        <div class="cat-icon"><svg><use href="#c-hv"/></svg></div>
+        <h3>Высоковольтное оборудование и&nbsp;трансформаторы</h3>
+        <ul><li>Силовые трансформаторы</li><li>Трансформаторные подстанции</li><li>Ячейки и&nbsp;выключатели нагрузки</li><li>Разъединители</li><li>Ограничители перенапряжения</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Высоковольтное оборудование и трансформаторы">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">10</span>
         <div class="cat-icon"><svg><use href="#c-ground"/></svg></div>
-        <h3>Молниезащита и заземление</h3>
-        <ul><li>Молниеприёмники</li><li>Токоотводы</li><li>Комплекты заземления</li><li>Полоса и пруток</li><li>Зажимы и соединители</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Молниезащита и заземление">Запросить</button>
+        <h3>Молниезащита и&nbsp;заземление</h3>
+        <ul><li>Молниеприёмники</li><li>Токоотводы</li><li>Комплекты заземления</li><li>Полоса и&nbsp;пруток</li><li>Зажимы и&nbsp;соединители</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Молниезащита и заземление">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">11</span>
         <div class="cat-icon"><svg><use href="#c-tool"/></svg></div>
-        <h3>Инструмент и средства защиты</h3>
-        <ul><li>Электроинструмент</li><li>Монтажный инструмент</li><li>Измерительные приборы</li><li>Диэлектрические средства защиты</li><li>Спецодежда и СИЗ</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Инструмент и средства защиты">Запросить</button>
+        <h3>Инструмент и&nbsp;средства защиты</h3>
+        <ul><li>Электроинструмент</li><li>Монтажный инструмент</li><li>Измерительные приборы</li><li>Диэлектрические средства защиты</li><li>Спецодежда и&nbsp;СИЗ</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Инструмент и средства защиты">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">12</span>
         <div class="cat-icon"><svg><use href="#c-heat"/></svg></div>
-        <h3>Электрообогрев и климатическое оборудование</h3>
-        <ul><li>Греющий кабель</li><li>Тёплые полы</li><li>Обогреватели и конвекторы</li><li>Тепловые завесы</li><li>Вентиляторы</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Электрообогрев и климатическое оборудование">Запросить</button>
+        <h3>Электрообогрев и&nbsp;климатическое оборудование</h3>
+        <ul><li>Греющий кабель</li><li>Тёплые полы</li><li>Обогреватели и&nbsp;конвекторы</li><li>Тепловые завесы</li><li>Вентиляторы</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Электрообогрев и климатическое оборудование">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
 
       <article class="cat-card reveal">
+        <span class="cat-num" aria-hidden="true">13</span>
         <div class="cat-icon"><svg><use href="#c-cam"/></svg></div>
         <h3>Слаботочные системы</h3>
-        <ul><li>Видеонаблюдение</li><li>СКС и сетевое оборудование</li><li>Домофония</li><li>Охранно-пожарная сигнализация</li></ul>
-        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Слаботочные системы">Запросить</button>
+        <ul><li>Видеонаблюдение</li><li>СКС и&nbsp;сетевое оборудование</li><li>Домофония</li><li>Охранно-пожарная сигнализация</li></ul>
+        <button type="button" class="btn btn-dark btn-sm js-request" data-category="Слаботочные системы">Запросить<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </article>
     </div>
 
     <div class="not-found reveal">
+      <!-- ВРЕМЕННОЕ ФОТО (CC0, Wikimedia Commons: «4.16kV switchgear», автор Rsparks3). Заменить: assets/switchgear.webp -->
+      <img class="not-found-bg" src="assets/switchgear.webp" alt="" loading="lazy" width="1600" height="1200">
       <div class="not-found-icon"><svg><use href="#i-doc"/></svg></div>
       <div>
-        <h3>Не нашли нужное? Пришлите спецификацию — поставим всё по списку</h3>
-        <p>Работаем с любыми перечнями: от пары позиций до полной спецификации проекта. Подберём аналоги, если нужной позиции нет в наличии.</p>
+        <h3>Не&nbsp;нашли нужное? Пришлите спецификацию&nbsp;— поставим всё по&nbsp;списку</h3>
+        <p>Работаем с&nbsp;любыми перечнями: от&nbsp;пары позиций до&nbsp;полной спецификации проекта. Подберём аналоги, если нужной позиции нет в&nbsp;наличии.</p>
       </div>
-      <button type="button" class="btn btn-accent js-request" data-category="Поставка по спецификации">Отправить спецификацию</button>
+      <button type="button" class="btn btn-accent js-request" data-category="Поставка по спецификации">Отправить спецификацию<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
   </div>
 </section>
@@ -565,69 +644,63 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   <div class="container">
     <div class="section-head reveal">
       <span class="section-kicker">Производители</span>
-      <h2 id="brands-title">Работаем с продукцией ведущих производителей</h2>
-      <p>Российские и зарубежные марки, проверенные на объектах наших клиентов.</p>
+      <h2 id="brands-title">Работаем с&nbsp;продукцией ведущих производителей</h2>
+      <p>Российские и&nbsp;зарубежные марки, проверенные на&nbsp;объектах наших клиентов.</p>
     </div>
-    <ul class="brands reveal" style="list-style:none;margin:0;padding:0">
-      <li class="brand">IEK</li>
-      <li class="brand">EKF</li>
-      <li class="brand">DKC</li>
-      <li class="brand">КЭАЗ</li>
-      <li class="brand">Systeme Electric</li>
-      <li class="brand">ABB</li>
-      <li class="brand">Legrand</li>
-      <li class="brand">Schneider Electric</li>
-      <li class="brand">Navigator</li>
-      <li class="brand">Gauss</li>
-      <li class="brand">Ensto</li>
-      <li class="brand">Камкабель</li>
-      <li class="brand">Севкабель</li>
-      <li class="brand">Электрокабель Кольчугино</li>
-      <li class="brand">Конкорд</li>
-      <li class="brand">Rexant</li>
-      <li class="brand brand-more">и другие</li>
-    </ul>
-    <p class="brands-note reveal">Нужен конкретный производитель или его аналог — укажите это в заявке.</p>
+    <ul class="sr-only"><li>IEK</li><li>EKF</li><li>DKC</li><li>КЭАЗ</li><li>Systeme Electric</li><li>ABB</li><li>Legrand</li><li>Schneider Electric</li><li>Navigator</li><li>Gauss</li><li>Ensto</li><li>Камкабель</li><li>Севкабель</li><li>Электрокабель Кольчугино</li><li>Конкорд</li><li>Rexant</li><li>и другие</li></ul>
+  </div>
+  <div class="brand-marquee reveal" aria-hidden="true">
+    <div class="brand-row"><div class="brand-track"><span class="brand">IEK</span><span class="brand brand-alt">EKF</span><span class="brand">DKC</span><span class="brand">КЭАЗ</span><span class="brand">Systeme Electric</span><span class="brand brand-alt">ABB</span><span class="brand">Legrand</span><span class="brand">Schneider Electric</span><span class="brand">IEK</span><span class="brand brand-alt">EKF</span><span class="brand">DKC</span><span class="brand">КЭАЗ</span><span class="brand">Systeme Electric</span><span class="brand brand-alt">ABB</span><span class="brand">Legrand</span><span class="brand">Schneider Electric</span><span class="brand">IEK</span><span class="brand brand-alt">EKF</span><span class="brand">DKC</span><span class="brand">КЭАЗ</span><span class="brand">Systeme Electric</span><span class="brand brand-alt">ABB</span><span class="brand">Legrand</span><span class="brand">Schneider Electric</span><span class="brand">IEK</span><span class="brand brand-alt">EKF</span><span class="brand">DKC</span><span class="brand">КЭАЗ</span><span class="brand">Systeme Electric</span><span class="brand brand-alt">ABB</span><span class="brand">Legrand</span><span class="brand">Schneider Electric</span></div></div>
+    <div class="brand-row reverse"><div class="brand-track"><span class="brand">Navigator</span><span class="brand brand-alt">Gauss</span><span class="brand">Ensto</span><span class="brand">Камкабель</span><span class="brand">Севкабель</span><span class="brand brand-alt">Электрокабель Кольчугино</span><span class="brand">Конкорд</span><span class="brand">Rexant</span><span class="brand">Navigator</span><span class="brand brand-alt">Gauss</span><span class="brand">Ensto</span><span class="brand">Камкабель</span><span class="brand">Севкабель</span><span class="brand brand-alt">Электрокабель Кольчугино</span><span class="brand">Конкорд</span><span class="brand">Rexant</span><span class="brand">Navigator</span><span class="brand brand-alt">Gauss</span><span class="brand">Ensto</span><span class="brand">Камкабель</span><span class="brand">Севкабель</span><span class="brand brand-alt">Электрокабель Кольчугино</span><span class="brand">Конкорд</span><span class="brand">Rexant</span><span class="brand">Navigator</span><span class="brand brand-alt">Gauss</span><span class="brand">Ensto</span><span class="brand">Камкабель</span><span class="brand">Севкабель</span><span class="brand brand-alt">Электрокабель Кольчугино</span><span class="brand">Конкорд</span><span class="brand">Rexant</span></div></div>
+  </div>
+  <div class="container">
+    <p class="brands-note reveal">Нужен конкретный производитель или&nbsp;его аналог&nbsp;— укажите это в&nbsp;заявке.</p>
   </div>
 </section>
 
 <!-- ================= ПРЕИМУЩЕСТВА ================= -->
-<section class="section" id="advantages" aria-labelledby="adv-title">
+<section class="section section-dark" id="advantages" aria-labelledby="adv-title">
   <div class="container">
     <div class="section-head reveal">
       <span class="section-kicker">Преимущества</span>
-      <h2 id="adv-title">Почему с нами удобно работать</h2>
+      <h2 id="adv-title">Почему с&nbsp;нами удобно работать</h2>
     </div>
     <div class="adv-grid">
       <div class="adv reveal">
+        <span class="adv-num" aria-hidden="true">01</span>
         <div class="adv-icon"><svg><use href="#a-box"/></svg></div>
         <h3>Широкий ассортимент</h3>
-        <p>Более 10 000 позиций электротехники и кабельной продукции — закрываем заявку целиком, без поиска по разным поставщикам.</p>
+        <p>Более 10&nbsp;000 позиций электротехники и&nbsp;кабельной продукции&nbsp;— закрываем заявку целиком, без&nbsp;поиска по&nbsp;разным поставщикам.</p>
       </div>
       <div class="adv reveal">
+        <span class="adv-num" aria-hidden="true">02</span>
         <div class="adv-icon"><svg><use href="#a-truck"/></svg></div>
-        <h3>Поставка по всей России</h3>
-        <p>Организуем доставку до объекта или склада в любом регионе транспортными компаниями.</p>
+        <h3>Поставка по&nbsp;всей России</h3>
+        <p>Организуем доставку до&nbsp;объекта или&nbsp;склада в&nbsp;любом регионе транспортными компаниями.</p>
       </div>
       <div class="adv reveal">
+        <span class="adv-num" aria-hidden="true">03</span>
         <div class="adv-icon"><svg><use href="#a-swap"/></svg></div>
         <h3>Подбор аналогов</h3>
-        <p>Если позиции нет или сроки не подходят — предложим равноценную замену с сопоставимыми характеристиками.</p>
+        <p>Если позиции нет или&nbsp;сроки не&nbsp;подходят&nbsp;— предложим равноценную замену с&nbsp;сопоставимыми характеристиками.</p>
       </div>
       <div class="adv reveal">
+        <span class="adv-num" aria-hidden="true">04</span>
         <div class="adv-icon"><svg><use href="#a-list"/></svg></div>
-        <h3>Работа по спецификациям и проектам</h3>
-        <p>Принимаем спецификации в Excel, PDF и Word, разбираем проектную документацию и готовим расчёт.</p>
+        <h3>Работа по&nbsp;спецификациям и&nbsp;проектам</h3>
+        <p>Принимаем спецификации в&nbsp;Excel, PDF и&nbsp;Word, разбираем проектную документацию и&nbsp;готовим расчёт.</p>
       </div>
       <div class="adv reveal">
+        <span class="adv-num" aria-hidden="true">05</span>
         <div class="adv-icon"><svg><use href="#a-file"/></svg></div>
-        <h3>Работа с юрлицами с НДС</h3>
-        <p>Договор, счёт, УПД и полный пакет закрывающих документов. Работаем с юридическими лицами и ИП.</p>
+        <h3>Работа с&nbsp;юрлицами с&nbsp;НДС</h3>
+        <p>Договор, счёт, УПД и&nbsp;полный пакет закрывающих документов. Работаем с&nbsp;юридическими лицами и&nbsp;ИП.</p>
       </div>
       <div class="adv reveal">
+        <span class="adv-num" aria-hidden="true">06</span>
         <div class="adv-icon"><svg><use href="#a-shield"/></svg></div>
         <h3>Сертифицированная продукция</h3>
-        <p>Поставляем продукцию с сертификатами и декларациями соответствия, предоставляем документы по запросу.</p>
+        <p>Поставляем продукцию с&nbsp;сертификатами и&nbsp;декларациями соответствия, предоставляем документы по&nbsp;запросу.</p>
       </div>
     </div>
   </div>
@@ -637,29 +710,30 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
 <section class="section section-alt" id="process" aria-labelledby="process-title">
   <div class="container">
     <div class="section-head reveal">
-      <span class="section-kicker">Как мы работаем</span>
-      <h2 id="process-title">Четыре шага от заявки до поставки</h2>
+      <span class="section-kicker">Как&nbsp;мы работаем</span>
+      <h2 id="process-title">Четыре шага от&nbsp;заявки до&nbsp;поставки</h2>
     </div>
-    <ol class="steps">
-      <li class="step reveal" style="background:#fff">
+    <ol class="steps reveal-line">
+      <li class="steps-line" aria-hidden="true"></li>
+      <li class="step reveal">
         <span class="step-num">1</span>
-        <h3>Заявка или спецификация</h3>
-        <p>Отправьте список товаров, спецификацию или проект через форму, по телефону или почте.</p>
+        <h3>Заявка или&nbsp;спецификация</h3>
+        <p>Отправьте список товаров, спецификацию или&nbsp;проект через форму, по&nbsp;телефону или&nbsp;почте.</p>
       </li>
-      <li class="step reveal" style="background:#fff">
+      <li class="step reveal">
         <span class="step-num">2</span>
-        <h3>Подбор и КП</h3>
-        <p>Подбираем позиции и аналоги, уточняем сроки и готовим коммерческое предложение.</p>
+        <h3>Подбор и&nbsp;КП</h3>
+        <p>Подбираем позиции и&nbsp;аналоги, уточняем сроки и&nbsp;готовим коммерческое предложение.</p>
       </li>
-      <li class="step reveal" style="background:#fff">
+      <li class="step reveal">
         <span class="step-num">3</span>
-        <h3>Договор и оплата</h3>
-        <p>Согласовываем условия, заключаем договор и выставляем счёт с НДС.</p>
+        <h3>Договор и&nbsp;оплата</h3>
+        <p>Согласовываем условия, заключаем договор и&nbsp;выставляем счёт с&nbsp;НДС.</p>
       </li>
-      <li class="step reveal" style="background:#fff">
+      <li class="step reveal">
         <span class="step-num">4</span>
         <h3>Доставка</h3>
-        <p>Отгружаем и доставляем товар на ваш объект или склад с полным пакетом документов.</p>
+        <p>Отгружаем и&nbsp;доставляем товар на&nbsp;ваш объект или&nbsp;склад с&nbsp;полным пакетом документов.</p>
       </li>
     </ol>
   </div>
@@ -671,13 +745,13 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
     <div class="request-aside reveal">
       <div class="section-head" style="margin-bottom:0">
         <span class="section-kicker" style="color:var(--accent)">Заявка</span>
-        <h2 id="request-title">Пришлите список — подберём и рассчитаем</h2>
-        <p>Заполните форму или прикрепите спецификацию. Менеджер свяжется с вами, уточнит детали и подготовит коммерческое предложение.</p>
+        <h2 id="request-title">Пришлите список&nbsp;— подберём и&nbsp;рассчитаем</h2>
+        <p>Заполните форму или&nbsp;прикрепите спецификацию. Менеджер свяжется с&nbsp;вами, уточнит детали и&nbsp;подготовит коммерческое предложение.</p>
       </div>
       <ul>
         <li><svg><use href="#i-check"/></svg>Принимаем файлы xls, xlsx, pdf, doc, docx</li>
-        <li><svg><use href="#i-check"/></svg>Подберём аналоги при отсутствии позиций</li>
-        <li><svg><use href="#i-check"/></svg>Счёт с НДС и полный пакет документов</li>
+        <li><svg><use href="#i-check"/></svg>Подберём аналоги при&nbsp;отсутствии позиций</li>
+        <li><svg><use href="#i-check"/></svg>Счёт с&nbsp;НДС и&nbsp;полный пакет документов</li>
       </ul>
       <div class="request-phone">
         <span>Удобнее голосом? Звоните</span>
@@ -687,7 +761,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
 
     <div class="form-card reveal" id="form-card">
       <form id="lead-form" novalidate>
-        <p class="form-title">Заявка на расчёт</p>
+        <p class="form-title">Заявка на&nbsp;расчёт</p>
         <div class="form-grid">
           <div class="field f-third">
             <label for="f-name">Имя <span class="req">*</span></label>
@@ -712,32 +786,32 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
             <label for="f-category">Категория товаров</label>
             <select id="f-category" name="category">
               <option value="">Выберите направление</option>
-              <option>Кабель и провод</option>
-              <option>Кабеленесущие системы</option>
-              <option>Низковольтное оборудование</option>
-              <option>Щитовое оборудование</option>
-              <option>Светотехника</option>
-              <option>Электроустановочные изделия</option>
-              <option>Кабельная арматура</option>
-              <option>Высоковольтное оборудование и трансформаторы</option>
-              <option>Электродвигатели, приводы и автоматизация</option>
-              <option>Молниезащита и заземление</option>
-              <option>Инструмент и средства защиты</option>
-              <option>Электрообогрев и климатическое оборудование</option>
-              <option>Слаботочные системы</option>
-              <option>Поставка по спецификации</option>
-              <option>Несколько направлений / другое</option>
+              <option value="Кабель и провод">Кабель и&nbsp;провод</option>
+              <option value="Кабеленесущие системы">Кабеленесущие системы</option>
+              <option value="Низковольтное оборудование">Низковольтное оборудование</option>
+              <option value="Щитовое оборудование">Щитовое оборудование</option>
+              <option value="Светотехника">Светотехника</option>
+              <option value="Электроустановочные изделия">Электроустановочные изделия</option>
+              <option value="Кабельная арматура">Кабельная арматура</option>
+              <option value="Высоковольтное оборудование и трансформаторы">Высоковольтное оборудование и&nbsp;трансформаторы</option>
+              <option value="Электродвигатели, приводы и автоматизация">Электродвигатели, приводы и&nbsp;автоматизация</option>
+              <option value="Молниезащита и заземление">Молниезащита и&nbsp;заземление</option>
+              <option value="Инструмент и средства защиты">Инструмент и&nbsp;средства защиты</option>
+              <option value="Электрообогрев и климатическое оборудование">Электрообогрев и&nbsp;климатическое оборудование</option>
+              <option value="Слаботочные системы">Слаботочные системы</option>
+              <option value="Поставка по спецификации">Поставка по&nbsp;спецификации</option>
+              <option value="Несколько направлений / другое">Несколько направлений / другое</option>
             </select>
           </div>
           <div class="field">
-            <label for="f-comment">Комментарий или список товаров</label>
+            <label for="f-comment">Комментарий или&nbsp;список товаров</label>
             <textarea id="f-comment" name="comment" maxlength="5000" placeholder="Например: ВВГнг-LS 3×2,5 — 500 м; автомат 1P C16 — 40 шт.; сроки, адрес доставки"></textarea>
           </div>
           <div class="field">
             <label class="file-drop" id="file-drop">
               <input type="file" id="f-file" name="file" aria-label="Файл спецификации" accept=".xls,.xlsx,.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
               <svg aria-hidden="true"><use href="#i-upload"/></svg>
-              <span class="file-drop-text" id="file-text"><b>Прикрепите спецификацию</b> · xls, xlsx, pdf, doc, docx до 10 МБ</span>
+              <span class="file-drop-text" id="file-text"><b>Прикрепите спецификацию</b> · xls, xlsx, pdf, doc, docx до&nbsp;10 МБ</span>
             </label>
             <span class="field-error" id="file-error" aria-live="polite"></span>
           </div>
@@ -751,7 +825,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
           <div class="field-full">
             <label class="consent" id="consent-label">
               <input type="checkbox" name="consent" id="f-consent" value="yes" required>
-              <span>Даю согласие на обработку персональных данных в соответствии с 152-ФЗ «О персональных данных» и принимаю <a href="politika-konfidentsialnosti.html" target="_blank" rel="noopener">политику конфиденциальности</a>.</span>
+              <span>Даю согласие на&nbsp;обработку персональных данных в&nbsp;соответствии с&nbsp;152-ФЗ «О&nbsp;персональных данных» и&nbsp;принимаю <a href="politika-konfidentsialnosti.html" target="_blank" rel="noopener">политику конфиденциальности</a>.</span>
             </label>
           </div>
 
@@ -764,8 +838,8 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
 
       <div class="form-success" role="status" aria-live="polite">
         <div class="form-success-icon"><svg><use href="#i-check"/></svg></div>
-        <h3>Спасибо! Мы свяжемся с вами в ближайшее время</h3>
-        <p>Если вопрос срочный — позвоните нам: <a href="tel:+79120617770" style="font-weight:700;color:var(--text)">+7 (912) 061-77-70</a></p>
+        <h3>Спасибо! Мы свяжемся с&nbsp;вами в&nbsp;ближайшее время</h3>
+        <p>Если вопрос срочный&nbsp;— позвоните нам: <a href="tel:+79120617770" style="font-weight:700;color:var(--text)">+7 (912) 061-77-70</a></p>
       </div>
     </div>
   </div>
@@ -776,8 +850,8 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
   <div class="container">
     <div class="section-head reveal">
       <span class="section-kicker">Контакты</span>
-      <h2 id="contacts-title">Свяжитесь с нами</h2>
-      <p>Ответим на вопросы, примем заявку и подготовим расчёт.</p>
+      <h2 id="contacts-title">Свяжитесь с&nbsp;нами</h2>
+      <p>Ответим на&nbsp;вопросы, примем заявку и&nbsp;подготовим расчёт.</p>
     </div>
     <div class="contacts-grid">
       <div class="contact reveal">
@@ -794,7 +868,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
       <div class="contact reveal">
         <svg><use href="#i-map"/></svg>
         <span>География</span>
-        <strong>Работаем по всей России</strong>
+        <strong>Работаем по&nbsp;всей России</strong>
       </div>
       <div class="contact reveal">
         <svg><use href="#i-id"/></svg>
@@ -814,7 +888,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
       <div class="footer-org">
         <strong>ООО «АПК «Универсалэнерго»</strong>
         <div>ИНН 5904287660</div>
-        <div>Поставка электротехнической и кабельной продукции. Работаем по всей России.</div>
+        <div>Поставка электротехнической и&nbsp;кабельной продукции. Работаем по&nbsp;всей России.</div>
       </div>
       <div class="footer-org">
         <div><a href="tel:+79120617770" style="color:#fff;font-weight:700;text-decoration:none">+7 (912) 061-77-70</a></div>
@@ -823,7 +897,7 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
       <nav class="footer-links" aria-label="Меню в подвале">
         <a href="#catalog">Каталог</a>
         <a href="#advantages">Преимущества</a>
-        <a href="#process">Как мы работаем</a>
+        <a href="#process">Как&nbsp;мы работаем</a>
         <a href="#request">Заявка</a>
         <a href="#contacts">Контакты</a>
       </nav>
@@ -832,11 +906,17 @@ section[id],footer[id]{scroll-margin-top:var(--header-h)}
       <span>© <span id="year">2026</span> ООО «АПК «Универсалэнерго»</span>
       <div class="footer-bottom-links">
         <a href="politika-konfidentsialnosti.html">Политика конфиденциальности</a>
-        <a class="footer-credit" href="https://sitomika.ru/?utm_source=universalenergo&amp;utm_medium=footer&amp;utm_campaign=client-sites" target="_blank" rel="noopener">Разработано в sitomika.ru</a>
+        <a class="footer-credit" href="https://sitomika.ru/?utm_source=universalenergo&amp;utm_medium=footer&amp;utm_campaign=client-sites" target="_blank" rel="noopener">Разработано в&nbsp;sitomika.ru</a>
       </div>
     </div>
   </div>
 </footer>
+
+<!-- Уведомление о cookie: показывается один раз, выбор запоминается в localStorage -->
+<div class="cookie" id="cookie" role="region" aria-label="Уведомление о cookie" hidden>
+  <p>Мы используем cookie и&nbsp;похожие технологии, чтобы сайт работал корректно. Подробнее&nbsp;— в&nbsp;<a href="politika-konfidentsialnosti.html">политике конфиденциальности</a>.</p>
+  <button type="button" class="btn btn-accent" id="cookie-ok">Хорошо</button>
+</div>
 
 <!-- Фиксированная кнопка звонка (только на телефонах) -->
 <a href="tel:+79120617770" class="call-fab" aria-label="Позвонить: +7 (912) 061-77-70"><svg><use href="#i-phone"/></svg>Позвонить</a>
@@ -912,6 +992,41 @@ if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: re
 } else {
   revealEls.forEach(el => el.classList.add("visible"));
 }
+
+// Линия прогресса в «Как мы работаем»
+const stepsEl = document.querySelector(".reveal-line");
+if (stepsEl) {
+  if ("IntersectionObserver" in window) {
+    const so = new IntersectionObserver(([en]) => { if (en.isIntersecting) { stepsEl.classList.add("visible"); so.disconnect(); } }, { threshold: 0.4 });
+    so.observe(stepsEl);
+  } else stepsEl.classList.add("visible");
+}
+
+// Подсветка карточек каталога за курсором
+if (matchMedia("(pointer: fine)").matches) {
+  document.querySelectorAll(".cat-card").forEach(card => {
+    card.addEventListener("pointermove", e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+      card.style.setProperty("--my", (e.clientY - r.top) + "px");
+    });
+  });
+}
+
+// Уведомление о cookie
+(() => {
+  const box = document.getElementById("cookie");
+  let ok = false;
+  try { ok = localStorage.getItem("cookie-ok") === "1"; } catch (e) {}
+  if (ok || !box) return;
+  box.hidden = false;
+  requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add("show")));
+  document.getElementById("cookie-ok").addEventListener("click", () => {
+    try { localStorage.setItem("cookie-ok", "1"); } catch (e) {}
+    box.classList.remove("show");
+    setTimeout(() => { box.hidden = true; }, 400);
+  });
+})();
 
 // Кнопки «Запросить»: выбрать категорию в форме и прокрутить к ней
 const select = document.getElementById("f-category");
